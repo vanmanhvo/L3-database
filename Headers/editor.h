@@ -24,8 +24,8 @@ Key readkey(Line* buf);
 
 void refreshTerminal(Line* buf);
 
-char* readLine(Line* buf);
+char* readLineBuf(Line *buf);
 
-char* editLine(char* content);
+char* readLine(char *content);
 
 #endif /* HEADERS_EDITOR_H_ */

@@ -41,12 +41,12 @@ void manh() {
 	printf("\nWelcome to L3 database application\n");
 	printf("type Ctrl+Q or enter the command 'exit' to quit\n\n");
 	while(1) {
-		char* command = editLine("");
+		char* command = readLine("");
 
 		if (strcmp(command, "exit")==0)
 			break;
 
-		execute(command);
+		execute(command); //TODO Manh
 	}
 }
 

@@ -83,7 +83,7 @@ void refreshTerminal(Line* buf)
 		printf("\033[%dD", n); // Move left X column;
 }
 
-char* readLine(Line* buf)
+char* readLineBuf(Line *buf)
 {
 	refreshTerminal(buf);
 	editOrAddHistoryEntry(buf->text);
@@ -110,11 +110,11 @@ char* readLine(Line* buf)
 /**
  * an advance fgets(), use to read the terminal stdin by editing a pre-defined content
  */
-char* editLine(char* content)
+char* readLine(char *content)
 {
 	Line buf;
 	strcpy(buf.text, isEmpty(content)==1 ? "" : content);
-	char* cmd=readLine(&buf);
+	char* cmd= readLineBuf(&buf);
 	moveToNextHistEntry();
 	return cmd;
 }
