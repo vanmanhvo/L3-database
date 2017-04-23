@@ -113,6 +113,7 @@ char* readLineBuf(Line *buf)
 char* readLine(char *content)
 {
 	Line buf;
+	buf.pos = 0;
 	strcpy(buf.text, isEmpty(content)==1 ? "" : content);
 	char* cmd= readLineBuf(&buf);
 	moveToNextHistEntry();
