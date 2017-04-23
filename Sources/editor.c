@@ -13,8 +13,6 @@
 #include "../Headers/outils.h"
 #include "../Headers/history.h"
 
-
-
 void clearLine()
 {
 	printf("\x0d");
@@ -33,42 +31,42 @@ Key readkey(Line* buf)
 		x[1] = '\0';
 		insert_into_string(buf->text, x, buf->pos);
 		buf->pos++;
-		//strcat(buf->text, "\0");
+
+		editOrAddHistoryEntry(buf->text); //edit current history entry or add a new one
 	}
 	if(k.isSpecialKey == 1)
 	{
-		if(k.c == 'l' && buf->pos > 0)
+		if(k.c == 'l' && buf->pos > 0) //left
 			buf->pos--;
-		if(k.c == 'r' && buf->pos < strlen(buf->text))
+		if(k.c == 'r' && buf->pos < strlen(buf->text)) //right
 			buf->pos++;
-		if(k.c == 'b' && buf->pos > 0)
+		if(k.c == 'b' && buf->pos > 0) //back
 		{
 			buf->pos--;
 			delete_from_string(buf->text, buf->pos);
+			editOrAddHistoryEntry(buf->text);
 		}
-		if(k.c == 'u')
+		if(k.c == 'u') //up
 		{
 			char* entry = moveToPreviousHistEntry();
-			if(entry != NULL)
+			if(isEmpty(entry) == 0)
 			{
 				strcpy(buf->text, entry);
-				//strcat(buf->text, " ");
-				buf->pos = strlen(buf->text)-1;
+				buf->pos = strlen(entry);
 			}
 		}
-		if(k.c == 'd')
+		if(k.c == 'd') //down
 		{
 			char* entry = moveToNextHistEntry();
-			if(entry == NULL)
+			if(isEmpty(entry) == 1)
 			{
-				buf->text = " ";
+				strcpy(buf->text, "");
 				buf->pos = 0;
 			}
 			else
 			{
 				strcpy(buf->text, entry);
-				//strcat(buf->text, " ");
-				buf->pos = strlen(buf->text)-1;
+				buf->pos = strlen(entry);
 			}
 		}
 	}
@@ -85,23 +83,21 @@ void refreshTerminal(Line* buf)
 		printf("\033[%dD", n); // Move left X column;
 }
 
-//
-
 char* readLine(Line* buf)
 {
 	refreshTerminal(buf);
-	char* result = malloc(200);
+	editOrAddHistoryEntry(buf->text);
+	char* result = malloc(256);
 	while(1)
 	{
 		Key k = readkey(buf);
 		refreshTerminal(buf);
-		//editHistoryEntry(buf->text);
+
 		if(k.c == 'e' && k.isSpecialKey == 1)
 		{
-			memcpy(result, buf->text, strlen(buf->text)-1);
+			memcpy(result, buf->text, strlen(buf->text));
 			clearLine();
 			printf("bql > %s\n", result);
-			//addHistoryEntry(result);
 			return result;
 		}
 		if(k.c == 'q' && k.isSpecialKey == 1)
@@ -110,3 +106,16 @@ char* readLine(Line* buf)
 		}
 	}
 }
+
+/**
+ * an advance fgets(), use to read the terminal stdin by editing a pre-defined content
+ */
+char* editLine(char* content)
+{
+	Line buf;
+	strcpy(buf.text, isEmpty(content)==1 ? "" : content);
+	char* cmd=readLine(&buf);
+	moveToNextHistEntry();
+	return cmd;
+}
+

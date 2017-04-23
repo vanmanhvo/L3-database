@@ -44,7 +44,6 @@ void readQuery(pthread_t t)
 				query[strlen(query)+1] = '\0';
 				strcat(query, str);
 				*c = query[strlen(query)-2];
-				addHistoryEntry(c);
 		}
 
 

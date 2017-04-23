@@ -13,7 +13,7 @@
 
 typedef struct Line
 {
-	char* text;
+	char text[256];
 	int pos;
 	//int length;
 }Line;
@@ -26,5 +26,6 @@ void refreshTerminal(Line* buf);
 
 char* readLine(Line* buf);
 
+char* editLine(char* content);
 
 #endif /* HEADERS_EDITOR_H_ */

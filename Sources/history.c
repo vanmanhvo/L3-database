@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "../Headers/history.h"
+#include "../Headers/outils.h"
 
 char history[HISTORY_SIZE][200];
 
@@ -30,34 +31,45 @@ char* getCurrentEntry()
 		return NULL;
 }
 
-void addHistoryEntry (const char * entry)
+void editOrAddHistoryEntry(const char * entry)
 {
-	strcpy(history[nextHistPos], entry);
-	currentHistPos = ++nextHistPos;
-
-
+	if (isEmptyOrSpace(entry)) {
+		return;
+	}
+	if (currentHistPos<HISTORY_SIZE)
+		strcpy(history[currentHistPos], entry);
+	if (currentHistPos == nextHistPos && nextHistPos<HISTORY_SIZE) {
+		nextHistPos++; //add a new one
+	}
 }
 
-void editHistoryEntry (const char * entry)
+void newHistoryEntry(const char * entry)
 {
-	strcpy(history[currentHistPos], entry);
-	//currentHistPos = nextHistPos;
-	//nextHistPos++;
+	if (nextHistPos<HISTORY_SIZE) {
+		strcpy(history[nextHistPos], entry);
+		nextHistPos++;
+		currentHistPos = nextHistPos;
+	}
 }
 
 char* moveToPreviousHistEntry()
 {
-	if(nextHistPos == 0)
+	if(nextHistPos == 0) { //history is empty
+		currentHistPos = 0;
 		return NULL;
-	if(currentHistPos == 0)
+	}
+	if(currentHistPos == 0) {
 		return history[0];
+	}
 	return history[--currentHistPos];
 }
 
 char* moveToNextHistEntry()
 {
-	if(nextHistPos == 0)
+	if(nextHistPos == 0) { //history is empty
+		currentHistPos = 0;
 		return NULL;
+	}
 	if(currentHistPos >= nextHistPos)
 		return NULL;
 	return history[++currentHistPos];

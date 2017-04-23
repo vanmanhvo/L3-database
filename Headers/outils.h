@@ -28,4 +28,7 @@ void mode_raw(int activer);
 void lignePrecedente(FILE *fichier);
 char isUp();
 
+int isEmpty(char* s);
+int isEmptyOrSpace(char* s);
+
 #endif /* HEADERS_OUTILS_H_ */

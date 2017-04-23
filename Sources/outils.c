@@ -298,7 +298,17 @@ Key wait_one_key ()
 	return key;
 }
 
+int isEmpty(char* s) {
+	if (s==NULL || s[0]=='\0' || s[0]==EOF)
+		return 1;
+	return 0;
+}
 
+int isEmptyOrSpace(char* s) {
+	if (s==NULL || s[0]=='\0' || s[0]==EOF || strcmp(s, " ")==0)
+		return 1;
+	return 0;
+}
 
 /*
  *Concatener deux chaines de caractères

@@ -10,17 +10,12 @@
 
 #define HISTORY_SIZE 100
 
-void addHistoryEntry (const char * entry);
-
-void editHistoryEntry (const char * entry);
-
-
+void editOrAddHistoryEntry (const char * entry);
+void newHistoryEntry(const char * entry);
 char* moveToPreviousHistEntry();
 char* moveToNextHistEntry();
 
 char* getCurrentEntry();
-
-
 int getCurrentHistPos();
 
 
